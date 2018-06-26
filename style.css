@@ -11,7 +11,7 @@ html, body {
 }
 
 h1 {
-    height: 100px;
+    height: 70px;
 }
 
 h1 span {
@@ -224,9 +224,22 @@ ul li {
     max-width: 150px;
 }
 
-ul li img {
-    width: 100%;
-    height: 110px;
+.list-base li {
+	margin: 5px;
+}
+
+.list-base img {
+	max-width: 100%;
+	min-height: 125px;
+}
+
+.list-base .base-inf {
+	display: inline-table;
+	min-height: 125px;
+}
+
+.list-base .base-name {
+	font-size: 12px;
 }
 
 /* button try print*/

@@ -1,8 +1,59 @@
+var backendUrl = 'http://mygift.com:8000/';
+var apiUrl = backendUrl + 'api/v1/';
+var bases = [];
+var base = [];
+var baseid = 0;
+var file = '';
+
+// Get the modal
+var modal = document.getElementById('myModal');
+
+function loadBase() {
+	var url = apiUrl + 'bases';
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			var myArr = JSON.parse(this.responseText);
+			bases = myArr.data.data;
+			f_genimglist(bases);
+		}
+	};
+	xhttp.open("GET", url, true);
+	xhttp.send();
+}
+
+function f_genimglist(arr) {
+    var out = "";
+    var i;
+	if(arr.length > 0){
+		baseid = arr[0].id;
+		selectBase(baseid);
+		for(i = 0; i < arr.length; i++) {
+			out += '<li onclick="selectBase(' + arr[i].id + ')"><a><img src="' + backendUrl + arr[i].img + '"></a>';
+			out += '<div class="base-inf"><p><a>Giá: '+ arr[i].price +'</a></p>';
+			out += '<p class="base-name"><a>'+ arr[i].name +'</a></p></div></li>';
+		}
+	}
+    document.getElementById("list-base").innerHTML = out;
+}
+
+function selectBase(id) {		
+	for(i = 0; i < bases.length; i++) {
+		if(bases[i].id===id){
+			base = bases[i];
+			document.getElementById("select-base").innerHTML = bases[i].name;
+			modal.style.display = "none";
+		}
+	}
+}
+
 var galleryUploader = new qq.FineUploader({
     element: document.getElementById("fine-uploader-gallery"),
     template: 'qq-template-gallery',
+	multiple: false,
     request: {
-        endpoint: '/server/uploads'
+        endpoint: apiUrl + 'upload',
+		inputName: "image"
     },
     text: {
         failUpload: 'Lỗi'
@@ -15,12 +66,14 @@ var galleryUploader = new qq.FineUploader({
     },
     validation: {
         allowedExtensions: ['jpeg', 'jpg', 'gif', 'png']
-    }
+    },
+	callbacks: {
+		onComplete: function(id, name, response) {
+			file = response.data;
+		}
+	}
 });
 
-
-// Get the modal
-var modal = document.getElementById('myModal');
 
 // Get the button that opens the modal
 var btn = document.getElementById("btnBase");
@@ -44,3 +97,7 @@ window.onclick = function (event) {
         modal.style.display = "none";
     }
 };
+
+document.addEventListener("DOMContentLoaded", function(event) {
+    loadBase();
+});
