@@ -31,6 +31,7 @@
     // Start the download
     function startDownload() {
 		console.log('Start...');
+		pPrint();
         // Update variables and CSS classes
         downloading = true;
         buttonContainer.classList.add('downloading');

@@ -98,6 +98,27 @@ window.onclick = function (event) {
     }
 };
 
+function pPrint() {
+	console.log(base, file);
+	var query = [];
+    query.push('base=' + encodeURIComponent(base.id));
+    query.push('file=' + encodeURIComponent(file.url));
+	
+	
+	var url = apiUrl + 'print';
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			var myArr = JSON.parse(this.responseText);
+			console.log(myArr);
+		}
+	};
+	
+	xhttp.open("POST", url, true);
+	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	xhttp.send(query.join('&'));
+}
+
 document.addEventListener("DOMContentLoaded", function(event) {
     loadBase();
 });
