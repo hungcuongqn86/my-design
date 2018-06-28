@@ -30,7 +30,7 @@
 
     // Start the download
     function startDownload() {
-		console.log('Start...');
+		// console.log('Start...');
 		pPrint();
         // Update variables and CSS classes
         downloading = true;
@@ -54,7 +54,7 @@
         stopProgress();
         iconLine.draw(0, '100%', 1, {easing: anime.easings['easeOutCubic']});
         iconSquare.draw('30%', '70%', 1, {easing: anime.easings['easeOutQuad']});
-		console.log('link to page review...');
+		pPrintEnd();
     }
 
     function animateIcon() {

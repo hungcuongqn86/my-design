@@ -4,6 +4,7 @@ var bases = [];
 var base = [];
 var baseid = 0;
 var file = '';
+var mockup = [];
 
 // Get the modal
 var modal = document.getElementById('myModal');
@@ -29,7 +30,7 @@ function f_genimglist(arr) {
 		baseid = arr[0].id;
 		selectBase(baseid);
 		for(i = 0; i < arr.length; i++) {
-			out += '<li onclick="selectBase(' + arr[i].id + ')"><a><img src="' + backendUrl + arr[i].img + '"></a>';
+			out += '<li onclick="selectBase(' + arr[i].id + ')"><a><img src="' + backendUrl + decodeURIComponent(arr[i].img) + '"></a>';
 			out += '<div class="base-inf"><p><a>Giá: '+ arr[i].price +'</a></p>';
 			out += '<p class="base-name"><a>'+ arr[i].name +'</a></p></div></li>';
 		}
@@ -99,7 +100,6 @@ window.onclick = function (event) {
 };
 
 function pPrint() {
-	console.log(base, file);
 	var query = [];
     query.push('base=' + encodeURIComponent(base.id));
     query.push('file=' + encodeURIComponent(file.url));
@@ -110,13 +110,19 @@ function pPrint() {
 	xhttp.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
 			var myArr = JSON.parse(this.responseText);
-			console.log(myArr);
+			mockup = myArr.data;
 		}
 	};
 	
 	xhttp.open("POST", url, true);
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xhttp.send(query.join('&'));
+}
+
+function pPrintEnd() {
+	if(mockup.base && mockup.mockup){
+		window.location.href = 'mockup.html?base='+mockup.base+'&mockup='+mockup.mockup;
+	}
 }
 
 document.addEventListener("DOMContentLoaded", function(event) {
